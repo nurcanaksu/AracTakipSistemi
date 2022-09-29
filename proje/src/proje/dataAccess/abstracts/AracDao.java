@@ -1,16 +1,21 @@
-package proje.dataAccess.abstracts;
+package springproje.proje1.dataAccess.abstracts;
 
 import java.util.List;
 
-import proje.entities.concretes.Arac;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AracDao {
+import springproje.proje1.entities.concretes.Arac;
 
-	void Add(Arac arac);
-	void Update(Arac arac);
-	void Delete(Arac arac);
-	Arac get(int id);
-	List<Arac> getList();
-	
-	
+public interface AracDao extends JpaRepository<Arac, Integer> {
+
+	Arac getByPlaka(String plaka);
+
+	Arac getByIdAndPlaka(int id, String plaka);
+
+	List<Arac> getByIdOrPlaka(int id, String plaka);
+
+	List<Arac> getByPlakaContains(String plaka);
+
+	List<Arac> getByPlakaStartsWith(String plaka);
+
 }

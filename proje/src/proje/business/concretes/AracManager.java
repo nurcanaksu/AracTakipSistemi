@@ -1,43 +1,36 @@
-package proje.business.concretes;
+package springproje.proje1.business.concretes;
 
 import java.util.List;
 
-import proje.business.abstracts.AracService;
-import proje.core.LoggerService;
-import proje.dataAccess.abstracts.AracDao;
-import proje.entities.concretes.Arac;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import springproje.proje1.business.abstracts.AracService;
+import springproje.proje1.core.utilities.results.DataResult;
+import springproje.proje1.core.utilities.results.Result;
+import springproje.proje1.core.utilities.results.SuccessDataResult;
+import springproje.proje1.dataAccess.abstracts.AracDao;
+import springproje.proje1.entities.concretes.Arac;
+
+@Service
 public class AracManager implements AracService {
 
+	private AracDao _aracDao;
 	
-	//dependency injextion
-	
-	private AracDao _aracdao;
-	private LoggerService _loggerService;
-	
-
-	public AracManager(AracDao _aracdao, LoggerService _loggerService) {
+	@Autowired
+	public AracManager(AracDao _aracDao) {
 		super();
-		this._aracdao = _aracdao;
-		this._loggerService = _loggerService;
+		this._aracDao = _aracDao;
 	}
 
 	@Override
-	public void add(Arac arac) {
-		//iþ kodlarý yani kýsýtlamalar da diyebiliriz.
-        if(arac.getId()==2)
-        {
-        	System.out.println("Bu id de ürün kabul edilmiyor");
-        	 return; 
-        }
-        this._aracdao.Add(arac);
-        this._loggerService.logToSystem("JLogger ile loglandý");
+	public DataResult<List<Arac>> getAll() {
+		return new SuccessDataResult<List<Arac>>(this._aracDao.findAll(), "Data Listelendi");
 	}
 
 	@Override
-	public List<Arac> getList() {
-		
-		return  _aracdao.getList();
+	public Result add(Arac arac) {
+		return new SuccessDataResult<Arac>(this._aracDao.save(arac),"ÃœrÃ¼n Eklendi");
 	}
 
 }
